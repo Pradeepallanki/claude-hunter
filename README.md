@@ -8,7 +8,7 @@ spent, what it has cost, which model is being used, and how fast you are
 burning tokens right now — so you can wrap up a task cleanly instead of
 being interrupted mid-flow by a *usage limit exceeded* error.
 ```
-opus-4-7  27% ▓▓▓░░░░░░░ · 25.8M/5h · $67.20
+opus-4-7 🔋 73% · 25.8M/5h · $67.20
 ```
 
 Hover the widget for a per-turn breakdown of input / output / cache

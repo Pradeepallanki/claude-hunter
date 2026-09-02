@@ -1,7 +1,7 @@
 // Renders snapshots into a VS Code status-bar item.
 import * as vscode from 'vscode';
 import { Snapshot } from './snapshot';
-import { formatCostUSD, formatPercentBar, formatTokensCompact } from './format';
+import { formatCostUSD, formatTokensCompact } from './format';
 import { renderTooltip } from './tooltip_renderer';
 
 export class StatusBarRenderer {
@@ -19,16 +19,19 @@ export class StatusBarRenderer {
 
   render(snapshot: Snapshot): void {
     const window5h = snapshot.window5h;
-    const percentColour = pickColourForPercent(window5h.percentOfCeilingEstimate);
+    const percentRemaining = Math.max(
+      0,
+      Math.min(100, 100 - window5h.percentOfCeilingEstimate),
+    );
+    const batteryColour = pickBatteryColour(percentRemaining);
     const shortModel = shortenModelName(snapshot.model);
 
     this.statusBarItem.text =
       `$(pulse) ${shortModel} ` +
-      `${window5h.percentOfCeilingEstimate.toFixed(0)}% ` +
-      `${formatPercentBar(window5h.percentOfCeilingEstimate)} ` +
+      `🔋 ${percentRemaining.toFixed(0)}% ` +
       `· ${formatTokensCompact(window5h.effectiveTokens)}/5h ` +
       `· ${formatCostUSD(window5h.costUSD)}`;
-    this.statusBarItem.color = percentColour;
+    this.statusBarItem.color = batteryColour;
     this.statusBarItem.tooltip = renderTooltip(snapshot);
   }
 
@@ -42,10 +45,10 @@ export class StatusBarRenderer {
   }
 }
 
-function pickColourForPercent(percent: number): vscode.ThemeColor | undefined {
-  if (percent >= 85) return new vscode.ThemeColor('errorForeground');
-  if (percent >= 60) return new vscode.ThemeColor('editorWarning.foreground');
-  return undefined;
+function pickBatteryColour(percentRemaining: number): vscode.ThemeColor {
+  if (percentRemaining <= 10) return new vscode.ThemeColor('errorForeground');
+  if (percentRemaining <= 20) return new vscode.ThemeColor('editorWarning.foreground');
+  return new vscode.ThemeColor('charts.green');
 }
 
 function shortenModelName(model: string | undefined): string {

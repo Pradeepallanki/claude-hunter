@@ -5,6 +5,8 @@ import com.intellij.openapi.wm.StatusBar
 import com.intellij.openapi.wm.StatusBarWidget
 import com.intellij.util.Consumer
 import java.awt.event.MouseEvent
+import kotlin.math.max
+import kotlin.math.min
 
 // StatusWidget renders the most recent Snapshot as a status-bar text item.
 class StatusWidget(private val hostProject: Project) : StatusBarWidget, StatusBarWidget.TextPresentation {
@@ -40,9 +42,9 @@ class StatusWidget(private val hostProject: Project) : StatusBarWidget, StatusBa
     override fun getText(): String {
         val snapshot = latestSnapshot ?: return "Claude ⏳"
         val window = snapshot.window
+        val percentRemaining = min(100.0, max(0.0, 100.0 - window.percentOfCeilingEstimate))
         return shortenModelName(snapshot.model) + " " +
-            "${window.percentOfCeilingEstimate.toInt()}% " +
-            SnapshotFormat.percentBar(window.percentOfCeilingEstimate) + " · " +
+            "🔋 ${percentRemaining.toInt()}% · " +
             SnapshotFormat.tokensCompact(window.effectiveTokens) + "/5h · " +
             SnapshotFormat.costUSD(window.costUSD)
     }

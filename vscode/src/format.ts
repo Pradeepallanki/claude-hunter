@@ -10,12 +10,6 @@ export function formatTokensCompact(tokens: number): string {
   return String(tokens);
 }
 
-export function formatPercentBar(percent: number, widthCells = 10): string {
-  const clamped = Math.max(0, Math.min(100, percent));
-  const filledCells = Math.round((clamped / 100) * widthCells);
-  return '▓'.repeat(filledCells) + '░'.repeat(widthCells - filledCells);
-}
-
 export function formatCostUSD(usd: number): string {
   if (usd < 0.01) return '$0';
   if (usd < 1) return '$' + usd.toFixed(2);
