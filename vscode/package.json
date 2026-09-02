@@ -1,0 +1,49 @@
+{
+  "name": "claude-hunter",
+  "displayName": "Claude Hunter",
+  "description": "Live Claude Code token-usage monitor in the status bar",
+  "version": "0.1.0",
+  "publisher": "reward360",
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": ["Other"],
+  "activationEvents": ["onStartupFinished"],
+  "main": "./out/extension.js",
+  "contributes": {
+    "configuration": {
+      "title": "Claude Hunter",
+      "properties": {
+        "claudeHunter.binaryPath": {
+          "type": "string",
+          "default": "",
+          "description": "Absolute path to the claude-hunter core binary. When empty, the extension looks for a bundled binary."
+        },
+        "claudeHunter.projectsDir": {
+          "type": "string",
+          "default": "",
+          "description": "Claude Code projects directory. Empty means ~/.claude/projects."
+        },
+        "claudeHunter.windowHours": {
+          "type": "number",
+          "default": 5,
+          "description": "Rolling window in hours."
+        },
+        "claudeHunter.ceilingMillions": {
+          "type": "number",
+          "default": 88,
+          "description": "Estimated effective-token ceiling (in millions) for the current plan."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/vscode": "^1.80.0",
+    "typescript": "^5.4.0"
+  }
+}
