@@ -14,6 +14,7 @@ export class StatusBarRenderer {
     );
     this.statusBarItem.text = 'Claude ⏳';
     this.statusBarItem.tooltip = 'Claude Hunter starting…';
+    this.statusBarItem.command = 'claudeHunter.showDetails';
     this.statusBarItem.show();
   }
 

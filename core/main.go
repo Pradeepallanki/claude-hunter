@@ -24,6 +24,7 @@ const (
 	burnRateSampleDuration    = 10 * time.Minute
 	defaultEmitInterval       = 250 * time.Millisecond
 	defaultCeilingEffectiveMi = 88.0
+	agentRecencyDuration      = 5 * time.Minute
 )
 
 type cliOptions struct {
@@ -126,6 +127,7 @@ func run(options cliOptions) error {
 					PercentOfCeilingEstimate: percentOfCeiling(totals.EffectiveTokens, options.ceilingEffectiveTokens),
 					PerModel:                 toSnapshotBreakdown(rollingWindow.PerModel()),
 				},
+				Agents: toSnapshotAgents(rollingWindow.PerSession(tickAt.Add(-agentRecencyDuration))),
 			}
 			if encodeErr := snapshotEncoder.Encode(payload); encodeErr != nil {
 				return fmt.Errorf("encode snapshot: %w", encodeErr)
@@ -139,6 +141,22 @@ func percentOfCeiling(effectiveTokens, ceilingTokens int64) float64 {
 		return 0
 	}
 	return float64(effectiveTokens) / float64(ceilingTokens) * 100.0
+}
+
+func toSnapshotAgents(sessions []window.SessionActivity) []snapshot.SessionActivity {
+	converted := make([]snapshot.SessionActivity, len(sessions))
+	for index, entry := range sessions {
+		converted[index] = snapshot.SessionActivity{
+			SessionID:         entry.SessionID,
+			Model:             entry.Model,
+			ContextTokens:     entry.ContextTokens,
+			ContextWindowSize: entry.ContextWindowSize,
+			TotalTokens:       entry.TotalTokens,
+			SidechainTurns:    entry.SidechainTurns,
+			LastActiveAt:      entry.LastActiveAt.UTC(),
+		}
+	}
+	return converted
 }
 
 func toSnapshotBreakdown(perModel []window.ModelBreakdown) []snapshot.ModelBreakdown {

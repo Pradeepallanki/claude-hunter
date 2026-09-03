@@ -14,6 +14,17 @@ object SnapshotParser {
         val type: String? = null,
         val model: String? = null,
         val window5h: RawWindow? = null,
+        val agents: List<RawAgent>? = null,
+    )
+
+    private data class RawAgent(
+        val sessionId: String = "",
+        val model: String = "",
+        val contextTokens: Long = 0,
+        val contextWindowSize: Long = 0,
+        val totalTokens: Long = 0,
+        val sidechainTurns: Long = 0,
+        val lastActiveAt: String = "",
     )
 
     private data class RawWindow(
@@ -45,6 +56,17 @@ object SnapshotParser {
             val rawWindow = decoded.window5h
             Snapshot(
                 model = decoded.model?.takeIf { it.isNotEmpty() },
+                agents = decoded.agents.orEmpty().map { rawAgent ->
+                    SessionActivity(
+                        sessionId = rawAgent.sessionId,
+                        model = rawAgent.model,
+                        contextTokens = rawAgent.contextTokens,
+                        contextWindowSize = rawAgent.contextWindowSize,
+                        totalTokens = rawAgent.totalTokens,
+                        sidechainTurns = rawAgent.sidechainTurns,
+                        lastActiveAt = rawAgent.lastActiveAt,
+                    )
+                },
                 window = WindowSummary(
                     inputTokens = rawWindow.inputTokens,
                     outputTokens = rawWindow.outputTokens,

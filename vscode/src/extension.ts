@@ -2,10 +2,12 @@
 import * as vscode from 'vscode';
 import { HunterProcess } from './hunter_process';
 import { StatusBarRenderer } from './status_bar';
+import { DetailsPanel } from './details_panel';
 import { locateHunterBinary } from './binary_locator';
 
 let hunterProcess: HunterProcess | null = null;
 let statusBarRenderer: StatusBarRenderer | null = null;
+let detailsPanel: DetailsPanel | null = null;
 let diagnosticLog: vscode.OutputChannel | null = null;
 let snapshotCount = 0;
 
@@ -14,6 +16,12 @@ export function activate(extensionContext: vscode.ExtensionContext): void {
   diagnosticLog.appendLine(`[activate] extensionPath=${extensionContext.extensionPath}`);
 
   statusBarRenderer = new StatusBarRenderer();
+  detailsPanel = new DetailsPanel();
+  extensionContext.subscriptions.push(
+    vscode.commands.registerCommand('claudeHunter.showDetails', () => {
+      detailsPanel?.show();
+    }),
+  );
 
   const settings = vscode.workspace.getConfiguration('claudeHunter');
   const configuredBinaryPath = settings.get<string>('binaryPath', '');
@@ -41,6 +49,7 @@ export function activate(extensionContext: vscode.ExtensionContext): void {
         );
       }
       statusBarRenderer?.render(snapshot);
+      detailsPanel?.update(snapshot);
     },
     onError: (message) => diagnosticLog?.appendLine(`[stderr] ${message}`),
     onExit: (exitCode) => {
@@ -64,6 +73,8 @@ export function deactivate(): void {
   hunterProcess = null;
   statusBarRenderer?.dispose();
   statusBarRenderer = null;
+  detailsPanel?.dispose();
+  detailsPanel = null;
   diagnosticLog?.dispose();
   diagnosticLog = null;
 }

@@ -16,13 +16,17 @@ type Record struct {
 	OutputTokens             int64
 	CacheCreationInputTokens int64
 	CacheReadInputTokens     int64
+	IsSidechain              bool
+	ParentUUID               string
 }
 
 type rawLine struct {
-	Type      string    `json:"type"`
-	SessionID string    `json:"sessionId"`
-	Timestamp time.Time `json:"timestamp"`
-	Message   *struct {
+	Type        string    `json:"type"`
+	SessionID   string    `json:"sessionId"`
+	Timestamp   time.Time `json:"timestamp"`
+	IsSidechain bool      `json:"isSidechain"`
+	ParentUUID  string    `json:"parentUuid"`
+	Message     *struct {
 		Model string `json:"model"`
 		Usage *struct {
 			InputTokens              int64 `json:"input_tokens"`
@@ -52,5 +56,7 @@ func ParseLine(rawJSON []byte) (*Record, error) {
 		OutputTokens:             decoded.Message.Usage.OutputTokens,
 		CacheCreationInputTokens: decoded.Message.Usage.CacheCreationInputTokens,
 		CacheReadInputTokens:     decoded.Message.Usage.CacheReadInputTokens,
+		IsSidechain:              decoded.IsSidechain,
+		ParentUUID:               decoded.ParentUUID,
 	}, nil
 }

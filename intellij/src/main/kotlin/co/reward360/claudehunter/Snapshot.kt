@@ -24,7 +24,18 @@ data class WindowSummary(
     val perModel: List<ModelBreakdown>,
 )
 
+data class SessionActivity(
+    val sessionId: String,
+    val model: String,
+    val contextTokens: Long,
+    val contextWindowSize: Long,
+    val totalTokens: Long,
+    val sidechainTurns: Long,
+    val lastActiveAt: String,
+)
+
 data class Snapshot(
     val model: String?,
     val window: WindowSummary,
+    val agents: List<SessionActivity> = emptyList(),
 )

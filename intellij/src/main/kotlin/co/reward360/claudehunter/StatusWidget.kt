@@ -61,5 +61,8 @@ class StatusWidget(private val hostProject: Project) : StatusBarWidget, StatusBa
 
     override fun getAlignment(): Float = 0f
 
-    override fun getClickConsumer(): Consumer<MouseEvent>? = null
+    override fun getClickConsumer(): Consumer<MouseEvent> = Consumer { mouseEvent ->
+        val snapshot = latestSnapshot ?: return@Consumer
+        DetailsPopup.show(snapshot, mouseEvent)
+    }
 }

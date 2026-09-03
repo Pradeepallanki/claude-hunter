@@ -23,9 +23,20 @@ export interface WindowSummary {
   perModel: ModelBreakdown[];
 }
 
+export interface SessionActivity {
+  sessionId: string;
+  model: string;
+  contextTokens: number;
+  contextWindowSize: number;
+  totalTokens: number;
+  sidechainTurns: number;
+  lastActiveAt: string;
+}
+
 export interface Snapshot {
   type: 'snapshot';
   ts: string;
   model?: string;
   window5h: WindowSummary;
+  agents?: SessionActivity[];
 }
