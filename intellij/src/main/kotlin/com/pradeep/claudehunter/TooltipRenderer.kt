@@ -1,4 +1,4 @@
-package co.reward360.claudehunter
+package com.pradeep.claudehunter
 
 // TooltipRenderer turns a Snapshot into the HTML string an IntelliJ status
 // bar tooltip needs (plain \n is ignored by Swing tooltips).

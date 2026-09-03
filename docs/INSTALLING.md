@@ -49,7 +49,7 @@ launch an **Extension Development Host**, or symlink the folder into
 `~/.vscode/extensions/`:
 
 ```bash
-ln -s "$(pwd)" ~/.vscode/extensions/reward360.claude-hunter-0.1.0
+ln -s "$(pwd)" ~/.vscode/extensions/pradeep.claude-hunter-0.1.0
 ```
 
 Reload VS Code. This method is what you want if you are actively
@@ -111,7 +111,7 @@ If the widget does not appear after restart:
 
 Open **Help → Show Log in Finder / Explorer**, then tail
 `idea.log`. On startup you should see lines from
-`co.reward360.claudehunter.*`. Warnings from `SnapshotParser` mean the
+`com.pradeep.claudehunter.*`. Warnings from `SnapshotParser` mean the
 core binary emitted an unexpected line — usually harmless.
 
 ---

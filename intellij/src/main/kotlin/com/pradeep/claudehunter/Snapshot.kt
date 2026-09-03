@@ -1,4 +1,4 @@
-package co.reward360.claudehunter
+package com.pradeep.claudehunter
 
 // ModelBreakdown is one row of the per-model attribution table.
 data class ModelBreakdown(

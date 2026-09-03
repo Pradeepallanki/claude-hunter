@@ -14,10 +14,10 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/reward360/claude-hunter/core/snapshot"
-	"github.com/reward360/claude-hunter/core/usage"
-	"github.com/reward360/claude-hunter/core/watcher"
-	"github.com/reward360/claude-hunter/core/window"
+	"github.com/pradeep/claude-hunter/core/snapshot"
+	"github.com/pradeep/claude-hunter/core/usage"
+	"github.com/pradeep/claude-hunter/core/watcher"
+	"github.com/pradeep/claude-hunter/core/window"
 )
 
 const (

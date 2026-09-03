@@ -3,11 +3,21 @@
   "displayName": "Claude Hunter",
   "description": "Live Claude Code token-usage monitor in the status bar",
   "version": "0.1.0",
-  "publisher": "reward360",
+  "publisher": "pradeep",
+  "license": "MIT",
   "engines": {
     "vscode": "^1.80.0"
   },
   "categories": ["Other"],
+  "keywords": ["claude", "claude-code", "anthropic", "tokens", "usage", "status-bar"],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pradeep/claude-hunter.git"
+  },
+  "bugs": {
+    "url": "https://github.com/pradeep/claude-hunter/issues"
+  },
+  "homepage": "https://github.com/pradeep/claude-hunter#readme",
   "activationEvents": ["onStartupFinished"],
   "main": "./out/extension.js",
   "contributes": {

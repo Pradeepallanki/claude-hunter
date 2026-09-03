@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/reward360/claude-hunter/core/usage"
+	"github.com/pradeep/claude-hunter/core/usage"
 )
 
 func recordAt(offset time.Duration, base time.Time) usage.Record {

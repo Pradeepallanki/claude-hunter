@@ -5,8 +5,8 @@ package window
 import (
 	"time"
 
-	"github.com/reward360/claude-hunter/core/pricing"
-	"github.com/reward360/claude-hunter/core/usage"
+	"github.com/pradeep/claude-hunter/core/pricing"
+	"github.com/pradeep/claude-hunter/core/usage"
 )
 
 // CacheReadWeight is the fraction of a cached-read token that counts toward
