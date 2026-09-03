@@ -1,4 +1,4 @@
-package co.reward360.claudehunter
+package com.pradeep.claudehunter
 
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.wm.StatusBar

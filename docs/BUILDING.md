@@ -68,11 +68,11 @@ Output lands in `vscode/out/`. To exercise the extension:
 - **Development host** — open `vscode/` in VS Code and press `F5`. A
   new window launches with the extension activated.
 - **Local install** — symlink `vscode/` into
-  `~/.vscode/extensions/reward360.claude-hunter-<version>` and reload
+  `~/.vscode/extensions/pradeep.claude-hunter-<version>` and reload
   the parent VS Code window.
 - **Package a VSIX** — install `vsce` (`npm i -g @vscode/vsce`), then
   `vsce package` inside `vscode/`. This produces
-  `reward360-claude-hunter-<version>.vsix`.
+  `pradeep-claude-hunter-<version>.vsix`.
 
 The extension expects the core binary to be present under
 `vscode/bin/<platform>-<arch>/claude-hunter`. Copy it there after

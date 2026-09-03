@@ -4,7 +4,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/reward360/claude-hunter/core/usage"
+	"github.com/pradeep/claude-hunter/core/usage"
 )
 
 func TestPerSessionGroupsBySessionIDAndKeepsLatestContext(t *testing.T) {

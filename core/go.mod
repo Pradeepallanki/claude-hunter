@@ -1,4 +1,4 @@
-module github.com/reward360/claude-hunter/core
+module github.com/pradeep/claude-hunter/core
 
 go 1.26.2
 

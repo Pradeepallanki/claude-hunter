@@ -17,7 +17,7 @@ core binary. Diagnose in this order:
    - VS Code: **Output → Claude Hunter** should show
      `[activate] hunter process started`.
    - IntelliJ: `idea.log` should show entries from
-     `co.reward360.claudehunter.*`.
+     `com.pradeep.claudehunter.*`.
 2. **Confirm the binary was found.** The `[activate] binary=…` line
    in VS Code Output tells you which path was chosen. If it reads
    `NOT FOUND`, set `claudeHunter.binaryPath` explicitly (see

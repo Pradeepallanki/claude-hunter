@@ -1,4 +1,4 @@
-package co.reward360.claudehunter
+package com.pradeep.claudehunter
 
 import com.intellij.openapi.diagnostic.Logger
 import java.io.File

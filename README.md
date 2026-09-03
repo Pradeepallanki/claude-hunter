@@ -108,4 +108,4 @@ Prebuilt binaries are shipped for `darwin-arm64`, `darwin-x64`,
 Claude Hunter is licensed under the MIT License. See
 [`LICENSE`](LICENSE) for the full text.
 
-Maintained by Reward360.
+Maintained by Pradeep.

@@ -3,8 +3,8 @@ package window
 import (
 	"sort"
 
-	"github.com/reward360/claude-hunter/core/pricing"
-	"github.com/reward360/claude-hunter/core/usage"
+	"github.com/pradeep/claude-hunter/core/pricing"
+	"github.com/pradeep/claude-hunter/core/usage"
 )
 
 // ModelBreakdown is the per-model aggregation surfaced to IDE clients so the

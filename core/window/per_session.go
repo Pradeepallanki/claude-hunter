@@ -5,7 +5,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/reward360/claude-hunter/core/usage"
+	"github.com/pradeep/claude-hunter/core/usage"
 )
 
 // SessionActivity is the per-session view surfaced to IDE clients so the

@@ -4,7 +4,7 @@ import (
 	"math"
 	"testing"
 
-	"github.com/reward360/claude-hunter/core/usage"
+	"github.com/pradeep/claude-hunter/core/usage"
 )
 
 func TestCalculateAppliesOpusRates(t *testing.T) {

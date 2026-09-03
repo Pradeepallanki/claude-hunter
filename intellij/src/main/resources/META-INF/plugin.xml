@@ -1,8 +1,8 @@
 <idea-plugin>
-    <id>co.reward360.claude-hunter</id>
+    <id>com.pradeep.claude-hunter</id>
     <name>Claude Hunter</name>
     <version>0.1.0</version>
-    <vendor email="pradeep.p@reward360.co" url="https://reward360.co">Reward360</vendor>
+    <vendor url="https://github.com/pradeep/claude-hunter">Pradeep</vendor>
 
     <description><![CDATA[
         Live Claude Code token-usage monitor in the IDE status bar.
@@ -13,7 +13,7 @@
     <extensions defaultExtensionNs="com.intellij">
         <statusBarWidgetFactory
             id="ClaudeHunterStatusWidget"
-            implementation="co.reward360.claudehunter.StatusWidgetFactory"
+            implementation="com.pradeep.claudehunter.StatusWidgetFactory"
             order="last"/>
     </extensions>
 </idea-plugin>

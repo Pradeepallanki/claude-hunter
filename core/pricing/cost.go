@@ -1,6 +1,6 @@
 package pricing
 
-import "github.com/reward360/claude-hunter/core/usage"
+import "github.com/pradeep/claude-hunter/core/usage"
 
 const tokensPerMillion = 1_000_000.0
 

@@ -3,7 +3,7 @@ plugins {
     id("org.jetbrains.intellij.platform") version "2.1.0"
 }
 
-group = "co.reward360"
+group = "com.pradeep"
 version = "0.1.0"
 
 repositories {

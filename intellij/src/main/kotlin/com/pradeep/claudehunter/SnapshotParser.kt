@@ -1,4 +1,4 @@
-package co.reward360.claudehunter
+package com.pradeep.claudehunter
 
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
