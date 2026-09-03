@@ -38,6 +38,30 @@ func TestParseLineExtractsUsageFromAssistantRecord(t *testing.T) {
 	if parsedRecord.CacheReadInputTokens != 100 {
 		t.Errorf("cache read tokens: got %d, want 100", parsedRecord.CacheReadInputTokens)
 	}
+	if parsedRecord.IsSidechain {
+		t.Errorf("expected IsSidechain=false, got true")
+	}
+	if parsedRecord.ParentUUID != "p-1" {
+		t.Errorf("parentUUID: got %q, want %q", parsedRecord.ParentUUID, "p-1")
+	}
+}
+
+func TestParseLineCapturesSidechainFlag(t *testing.T) {
+	rawLine := []byte(`{"parentUuid":"p-2","isSidechain":true,"message":{"model":"claude-opus-4-7","usage":{"input_tokens":1,"output_tokens":2}},"type":"assistant","sessionId":"session-abc","timestamp":"2026-08-20T04:38:24.503Z"}`)
+
+	parsedRecord, err := ParseLine(rawLine)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if parsedRecord == nil {
+		t.Fatal("expected non-nil record")
+	}
+	if !parsedRecord.IsSidechain {
+		t.Errorf("expected IsSidechain=true, got false")
+	}
+	if parsedRecord.ParentUUID != "p-2" {
+		t.Errorf("parentUUID: got %q, want %q", parsedRecord.ParentUUID, "p-2")
+	}
 }
 
 func TestParseLineReturnsNilForNonAssistantRecord(t *testing.T) {

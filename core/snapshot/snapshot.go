@@ -6,10 +6,22 @@ import "time"
 
 // Snapshot is one NDJSON record sent to the IDE client.
 type Snapshot struct {
-	Kind      string        `json:"type"`
-	Timestamp time.Time     `json:"ts"`
-	Model     string        `json:"model,omitempty"`
-	Window    WindowSummary `json:"window5h"`
+	Kind      string            `json:"type"`
+	Timestamp time.Time         `json:"ts"`
+	Model     string            `json:"model,omitempty"`
+	Window    WindowSummary     `json:"window5h"`
+	Agents    []SessionActivity `json:"agents"`
+}
+
+// SessionActivity describes one Claude Code session active in the window.
+type SessionActivity struct {
+	SessionID         string    `json:"sessionId"`
+	Model             string    `json:"model"`
+	ContextTokens     int64     `json:"contextTokens"`
+	ContextWindowSize int64     `json:"contextWindowSize"`
+	TotalTokens       int64     `json:"totalTokens"`
+	SidechainTurns    int64     `json:"sidechainTurns"`
+	LastActiveAt      time.Time `json:"lastActiveAt"`
 }
 
 // WindowSummary carries the totals a client renders in the status bar.
