@@ -20,7 +20,17 @@ export interface WindowSummary {
   windowStart: string;
   windowEnd: string;
   percentOfCeilingEstimate: number;
+  secondsToLimit: number;
   perModel: ModelBreakdown[];
+}
+
+export interface ProjectActivity {
+  project: string;
+  cwd: string;
+  sessions: number;
+  totalTokens: number;
+  costUSD: number;
+  lastActiveAt: string;
 }
 
 export interface SessionActivity {
@@ -39,4 +49,5 @@ export interface Snapshot {
   model?: string;
   window5h: WindowSummary;
   agents?: SessionActivity[];
+  projects?: ProjectActivity[];
 }

@@ -15,6 +15,16 @@ object SnapshotParser {
         val model: String? = null,
         val window5h: RawWindow? = null,
         val agents: List<RawAgent>? = null,
+        val projects: List<RawProject>? = null,
+    )
+
+    private data class RawProject(
+        val project: String = "",
+        val cwd: String = "",
+        val sessions: Int = 0,
+        val totalTokens: Long = 0,
+        val costUSD: Double = 0.0,
+        val lastActiveAt: String = "",
     )
 
     private data class RawAgent(
@@ -36,6 +46,7 @@ object SnapshotParser {
         val costUSD: Double = 0.0,
         val burnRatePerMinute: Double = 0.0,
         val percentOfCeilingEstimate: Double = 0.0,
+        val secondsToLimit: Long = -1,
         val perModel: List<RawModelBreakdown>? = null,
     )
 
@@ -67,6 +78,16 @@ object SnapshotParser {
                         lastActiveAt = rawAgent.lastActiveAt,
                     )
                 },
+                projects = decoded.projects.orEmpty().map { rawProject ->
+                    ProjectActivity(
+                        project = rawProject.project,
+                        cwd = rawProject.cwd,
+                        sessions = rawProject.sessions,
+                        totalTokens = rawProject.totalTokens,
+                        costUSD = rawProject.costUSD,
+                        lastActiveAt = rawProject.lastActiveAt,
+                    )
+                },
                 window = WindowSummary(
                     inputTokens = rawWindow.inputTokens,
                     outputTokens = rawWindow.outputTokens,
@@ -76,6 +97,7 @@ object SnapshotParser {
                     costUSD = rawWindow.costUSD,
                     burnRatePerMinute = rawWindow.burnRatePerMinute,
                     percentOfCeilingEstimate = rawWindow.percentOfCeilingEstimate,
+                    secondsToLimit = rawWindow.secondsToLimit,
                     perModel = rawWindow.perModel.orEmpty().map { rawEntry ->
                         ModelBreakdown(
                             model = rawEntry.model,

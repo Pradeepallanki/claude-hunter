@@ -18,6 +18,7 @@ type Record struct {
 	CacheReadInputTokens     int64
 	IsSidechain              bool
 	ParentUUID               string
+	CWD                      string
 }
 
 type rawLine struct {
@@ -26,6 +27,7 @@ type rawLine struct {
 	Timestamp   time.Time `json:"timestamp"`
 	IsSidechain bool      `json:"isSidechain"`
 	ParentUUID  string    `json:"parentUuid"`
+	CWD         string    `json:"cwd"`
 	Message     *struct {
 		Model string `json:"model"`
 		Usage *struct {
@@ -58,5 +60,6 @@ func ParseLine(rawJSON []byte) (*Record, error) {
 		CacheReadInputTokens:     decoded.Message.Usage.CacheReadInputTokens,
 		IsSidechain:              decoded.IsSidechain,
 		ParentUUID:               decoded.ParentUUID,
+		CWD:                      decoded.CWD,
 	}, nil
 }

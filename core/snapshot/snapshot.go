@@ -11,6 +11,17 @@ type Snapshot struct {
 	Model     string            `json:"model,omitempty"`
 	Window    WindowSummary     `json:"window5h"`
 	Agents    []SessionActivity `json:"agents"`
+	Projects  []ProjectActivity `json:"projects"`
+}
+
+// ProjectActivity is one row of the Projects tab — rollup by cwd basename.
+type ProjectActivity struct {
+	Project      string    `json:"project"`
+	CWD          string    `json:"cwd"`
+	Sessions     int       `json:"sessions"`
+	TotalTokens  int64     `json:"totalTokens"`
+	CostUSD      float64   `json:"costUSD"`
+	LastActiveAt time.Time `json:"lastActiveAt"`
 }
 
 // SessionActivity describes one Claude Code session active in the window.
@@ -36,6 +47,7 @@ type WindowSummary struct {
 	WindowStart              time.Time        `json:"windowStart"`
 	WindowEnd                time.Time        `json:"windowEnd"`
 	PercentOfCeilingEstimate float64          `json:"percentOfCeilingEstimate"`
+	SecondsToLimit           int64            `json:"secondsToLimit"`
 	PerModel                 []ModelBreakdown `json:"perModel"`
 }
 
