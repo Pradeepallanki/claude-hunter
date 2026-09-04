@@ -21,6 +21,7 @@ data class WindowSummary(
     val costUSD: Double,
     val burnRatePerMinute: Double,
     val percentOfCeilingEstimate: Double,
+    val secondsToLimit: Long,
     val perModel: List<ModelBreakdown>,
 )
 
@@ -34,8 +35,18 @@ data class SessionActivity(
     val lastActiveAt: String,
 )
 
+data class ProjectActivity(
+    val project: String,
+    val cwd: String,
+    val sessions: Int,
+    val totalTokens: Long,
+    val costUSD: Double,
+    val lastActiveAt: String,
+)
+
 data class Snapshot(
     val model: String?,
     val window: WindowSummary,
     val agents: List<SessionActivity> = emptyList(),
+    val projects: List<ProjectActivity> = emptyList(),
 )

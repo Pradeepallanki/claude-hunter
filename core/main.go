@@ -110,6 +110,7 @@ func run(options cliOptions) error {
 		case tickAt := <-emitTicker.C:
 			rollingWindow.PruneBefore(tickAt.Add(-options.windowDuration))
 			totals := rollingWindow.Totals()
+			burnRate := rollingWindow.BurnRatePerMinute(tickAt, burnRateSampleDuration)
 			payload := snapshot.Snapshot{
 				Kind:      "snapshot",
 				Timestamp: tickAt.UTC(),
@@ -121,13 +122,15 @@ func run(options cliOptions) error {
 					CacheReadTokens:          totals.CacheReadTokens,
 					EffectiveTokens:          totals.EffectiveTokens,
 					CostUSD:                  totals.CostUSD,
-					BurnRatePerMinute:        rollingWindow.BurnRatePerMinute(tickAt, burnRateSampleDuration),
+					BurnRatePerMinute:        burnRate,
 					WindowStart:              tickAt.Add(-options.windowDuration).UTC(),
 					WindowEnd:                tickAt.UTC(),
 					PercentOfCeilingEstimate: percentOfCeiling(totals.EffectiveTokens, options.ceilingEffectiveTokens),
+					SecondsToLimit:           secondsToLimit(totals.EffectiveTokens, options.ceilingEffectiveTokens, burnRate),
 					PerModel:                 toSnapshotBreakdown(rollingWindow.PerModel()),
 				},
-				Agents: toSnapshotAgents(rollingWindow.PerSession(tickAt.Add(-agentRecencyDuration))),
+				Agents:   toSnapshotAgents(rollingWindow.PerSession(tickAt.Add(-agentRecencyDuration))),
+				Projects: toSnapshotProjects(rollingWindow.PerProject()),
 			}
 			if encodeErr := snapshotEncoder.Encode(payload); encodeErr != nil {
 				return fmt.Errorf("encode snapshot: %w", encodeErr)
@@ -141,6 +144,36 @@ func percentOfCeiling(effectiveTokens, ceilingTokens int64) float64 {
 		return 0
 	}
 	return float64(effectiveTokens) / float64(ceilingTokens) * 100.0
+}
+
+// secondsToLimit projects when the effective-token ceiling will be reached at
+// the current burn rate. Returns -1 when the burn rate is zero or the ceiling
+// is already exceeded (the answer is undefined in either case).
+func secondsToLimit(effectiveTokens, ceilingTokens int64, burnRatePerMinute float64) int64 {
+	if ceilingTokens <= 0 || burnRatePerMinute <= 0 {
+		return -1
+	}
+	remaining := float64(ceilingTokens - effectiveTokens)
+	if remaining <= 0 {
+		return 0
+	}
+	minutes := remaining / burnRatePerMinute
+	return int64(minutes * 60)
+}
+
+func toSnapshotProjects(projects []window.ProjectActivity) []snapshot.ProjectActivity {
+	converted := make([]snapshot.ProjectActivity, len(projects))
+	for index, entry := range projects {
+		converted[index] = snapshot.ProjectActivity{
+			Project:      entry.Project,
+			CWD:          entry.CWD,
+			Sessions:     entry.Sessions,
+			TotalTokens:  entry.TotalTokens,
+			CostUSD:      entry.CostUSD,
+			LastActiveAt: entry.LastActiveAt.UTC(),
+		}
+	}
+	return converted
 }
 
 func toSnapshotAgents(sessions []window.SessionActivity) []snapshot.SessionActivity {

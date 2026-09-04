@@ -94,8 +94,14 @@ func (o *ProjectsObserver) seedExistingTree() error {
 			return nil
 		}
 		if isSessionFile(path) {
-			o.registerTailer(path)
-			o.drainTailer(path)
+			// Pre-existing session files are seeked past their current end
+			// so we tail only content appended after startup. Replaying the
+			// full history would balloon memory on machines with months of
+			// accumulated `~/.claude/projects` data.
+			tailer := o.registerTailer(path)
+			if err := tailer.SeekToEnd(); err != nil {
+				o.reportError(err)
+			}
 		}
 		return nil
 	})
@@ -117,12 +123,15 @@ func (o *ProjectsObserver) handleFsEvent(fsEvent fsnotify.Event) {
 	}
 }
 
-func (o *ProjectsObserver) registerTailer(sessionPath string) {
+func (o *ProjectsObserver) registerTailer(sessionPath string) *FileTailer {
 	o.tailerMutex.Lock()
 	defer o.tailerMutex.Unlock()
-	if _, exists := o.tailersByPath[sessionPath]; !exists {
-		o.tailersByPath[sessionPath] = NewFileTailer(sessionPath)
+	if existing, exists := o.tailersByPath[sessionPath]; exists {
+		return existing
 	}
+	tailer := NewFileTailer(sessionPath)
+	o.tailersByPath[sessionPath] = tailer
+	return tailer
 }
 
 func (o *ProjectsObserver) drainTailer(sessionPath string) {
